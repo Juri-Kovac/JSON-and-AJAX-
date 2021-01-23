@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Ajax 1 text file</title>
+</head>
+<body>
+<button id="button">Get text File</button>
+<div id="send"></div>
+
+<script>
+     document.querySelector('#button').addEventListener('click', loadText);
+
+    function loadText() {
+        let xhr = new XMLHttpRequest();
+        xhr.open("GET","sample.txt",true)
+        // console.log("readyState ", xhr.readyState)
+
+        // optional - used for loader
+        xhr.onprogress = function(){
+            console.log(xhr.readyState)
+        };
+
+        xhr.onload = function(){
+            console.log("readyState ", xhr.readyState)
+            if (this.status === 200 && this.readyState === 4 ){
+                document.querySelector('#send').innerHTML = xhr.responseText;
+            }else if (this.status === 404){
+                document.querySelector('#send').innerHTML = 'Not found';
+
+            }
+        }
+
+        // xhr.onreadystatechange = function () {
+        //     console.log("readyState ", xhr.readyState)
+        //
+        //     if (this.readyState === 4 && this.status === 200){
+        //         console.log(xhr.responseText)
+        //     }
+        // }
+
+        // xhr.onerror = function(){
+        //     console.log("request error ...")
+        // }
+        xhr.send()
+
+    }
+/*
+Informational responses (100–199), "200-OK"
+Successful responses (200–299),
+Redirects (300–399),
+Client errors (400–499), "403-forbidden  404-Not found"
+and Server errors (500–599).
+*/
+</script>
+</body>
+</html>

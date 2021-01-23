@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax 3 - external API</title>
+    <style>
+        .user {
+            background: #f4f4f4;
+            margin-bottom: 10px;
+        }
+        .user ul{
+            list-style: none;
+            overflow: hidden ;
+
+        }
+        li:first-child{
+            display: block;
+            float:left;
+            margin-right: 1em;
+        }
+    </style>
+</head>
+<body>
+<button id="button">Load GitHub User</button>
+<br>
+<br>
+<h1>Github Users</h1>
+<div id="users"></div>
+<script>
+    window.document.getElementById('button').addEventListener('click',
+    loadUsers);
+
+
+    function loadUsers() {
+    let xhr = new XMLHttpRequest();
+    xhr.open("GET","https://api.github.com/users",true)
+    xhr.onload = function(){
+        let output = "";
+        if (xhr.readyState === 4 && xhr.status === 200 ){
+
+            let getRequest = JSON.parse(xhr.responseText);
+
+            // for( let i in getRequest) {
+             //     if (getRequest.hasOwnProperty(i)) {
+             //         output +=
+             //             `
+             //                <ul>
+             //                <li>Get Id :${getRequest[i].id}</li>
+             //                <li>Get Name :${getRequest[i].login}</li>
+             //                <li>Get Avatar :${getRequest[i].avatar_url}</li>
+             //                </ul>
+             //             `
+             //     }
+             // }
+             getRequest.forEach(function (dataRow) {
+              output += `
+                <div class="user">
+                    <ul>
+                    <li><img src="${dataRow.avatar_url} " alt="avatar" width="70" height="70"> </li>
+                    <li>  ID : ${dataRow.id}</li>
+                    <li>  Login : ${dataRow.login}</li>
+                    </ul>
+                </div>
+                  `
+          })
+        }
+        window.document.querySelector('#users').innerHTML = output;
+    }
+
+    xhr.send()
+    }
+</script>
+</body>
+</html>
